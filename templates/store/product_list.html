@@ -7,16 +7,16 @@
 {% block content %}
 <div class="flex flex-col sm:flex-row gap-6 sm:gap-8">
     <aside class="w-full sm:w-48 lg:w-64 flex-shrink-0">
-        <div class="bg-gray-800 rounded-xl shadow-sm border border-gray-700 p-4 sm:p-6">
+        <div class="bg-gray-800 rounded-xl shadow-sm border border-gold-800 p-4 sm:p-6">
             <h3 class="font-bold text-lg mb-4 text-gold-400 flex items-center gap-2">
-                <span>◆</span> Categorías
+                <i class="ph ph-list"></i> Categorías
             </h3>
             <div class="flex sm:flex-col gap-2 overflow-x-auto sm:overflow-x-visible pb-2 sm:pb-0">
-                <a href="{% url 'store:product_list' %}" class="whitespace-nowrap sm:whitespace-normal text-sm sm:text-base px-3 py-2 rounded-lg transition {% if not category %}bg-gold-600 text-black font-semibold{% else %}text-gray-400 hover:bg-gray-700{% endif %}">
+                <a href="{% url 'store:product_list' %}" class="whitespace-nowrap sm:whitespace-normal text-sm sm:text-base px-3 py-2 rounded-lg transition {% if not category %}bg-gold-600 text-black font-semibold{% else %}text-gray-300 hover:bg-gold-900/50 hover:text-gold-300{% endif %}">
                     Todas
                 </a>
                 {% for c in categories %}
-                <a href="{% url 'store:product_list_by_category' c.slug %}" class="whitespace-nowrap sm:whitespace-normal text-sm sm:text-base px-3 py-2 rounded-lg transition {% if category.slug == c.slug %}bg-gold-600 text-black font-semibold{% else %}text-gray-400 hover:bg-gray-700{% endif %}">
+                <a href="{% url 'store:product_list_by_category' c.slug %}" class="whitespace-nowrap sm:whitespace-normal text-sm sm:text-base px-3 py-2 rounded-lg transition {% if category.slug == c.slug %}bg-gold-600 text-black font-semibold{% else %}text-gray-300 hover:bg-gold-900/50 hover:text-gold-300{% endif %}">
                     {{ c.name }}
                 </a>
                 {% endfor %}
@@ -34,15 +34,15 @@
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {% for product in products %}
-            <div class="bg-gray-800 rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-700 hover:border-gold-500 overflow-hidden group">
+            <div class="bg-gray-800 rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gold-800 hover:border-gold-500 overflow-hidden group">
                 <a href="{{ product.get_absolute_url }}">
                     {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-40 sm:h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full aspect-square sm:aspect-auto sm:h-48 object-cover group-hover:scale-105 transition-transform duration-500">
                     {% else %}
-                    <div class="w-full h-40 sm:h-48 bg-gray-700 flex items-center justify-center text-gray-500">Sin imagen</div>
+                    <div class="w-full aspect-square sm:aspect-auto sm:h-48 bg-gray-700 flex items-center justify-center text-gray-500">Sin imagen</div>
                     {% endif %}
-                    <div class="p-4 border-t border-gray-700">
-                        <h3 class="font-semibold text-base sm:text-lg text-white">{{ product.name }}</h3>
+                    <div class="p-4 border-t border-gold-800">
+                        <h3 class="font-semibold text-base sm:text-lg text-gold-100">{{ product.name }}</h3>
                         <p class="text-gold-400 font-bold mt-1 text-lg">${{ product.price }}</p>
                     </div>
                 </a>

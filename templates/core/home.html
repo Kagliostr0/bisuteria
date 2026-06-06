@@ -21,15 +21,15 @@
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {% for product in products %}
-        <div class="bg-gray-800 rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-700 hover:border-gold-500 overflow-hidden group">
+        <div class="bg-gray-800 rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gold-800 hover:border-gold-500 overflow-hidden group">
             <a href="{{ product.get_absolute_url }}">
                 {% if product.image %}
                 <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full aspect-square sm:aspect-auto sm:h-44 object-cover group-hover:scale-105 transition-transform duration-500">
                 {% else %}
                 <div class="w-full aspect-square sm:aspect-auto sm:h-44 bg-gray-700 flex items-center justify-center text-gray-500">Sin imagen</div>
                 {% endif %}
-                <div class="p-3 border-t border-gray-700">
-                    <h3 class="font-semibold text-sm sm:text-base text-white truncate">{{ product.name }}</h3>
+                <div class="p-3 border-t border-gold-800">
+                    <h3 class="font-semibold text-sm sm:text-base text-gold-100 truncate">{{ product.name }}</h3>
                     <p class="text-gold-400 font-bold text-base">${{ product.price }}</p>
                 </div>
             </a>
