@@ -1,0 +1,86 @@
+2026-06-06T03:25:51.215400220Z [inf]  scheduling build on Metal builder "production-builderv3-us-west1-jpkn"
+2026-06-06T03:25:52.088643535Z [inf]  unpacking archive
+2026-06-06T03:25:52.144781065Z [inf]  uploading snapshot
+2026-06-06T03:25:52.174556522Z [inf]  using build driver railpack-v0.26.1
+2026-06-06T03:25:52.290948158Z [inf]                     
+2026-06-06T03:25:52.290953246Z [inf]  [38;2;125;86;243m╭─────────────────╮[0m
+2026-06-06T03:25:52.290956460Z [inf]  [38;2;125;86;243m│[0m Railpack 0.26.1 [38;2;125;86;243m│[0m
+2026-06-06T03:25:52.290957802Z [inf]  [38;2;125;86;243m╰─────────────────╯[0m
+2026-06-06T03:25:52.290958353Z [inf]  
+2026-06-06T03:25:52.290960180Z [inf]    [97m↳ Detected Python[0m
+2026-06-06T03:25:52.290960808Z [inf]    [97m↳ Using pip[0m
+2026-06-06T03:25:52.290962889Z [inf]    [97m↳ Using Django app: bisuteria.wsgi[0m
+2026-06-06T03:25:52.290965038Z [inf]              
+2026-06-06T03:25:52.290965655Z [inf]    [1mPackages[0m  
+2026-06-06T03:25:52.290966229Z [inf]    [38;5;238m──────────[0m
+2026-06-06T03:25:52.290968018Z [inf]    [95mpython[0m  [38;5;238m│[0m  [96m3.13.13[0m  [38;5;238m│[0m  railpack default (3.13)
+2026-06-06T03:25:52.290969690Z [inf]              
+2026-06-06T03:25:52.290970362Z [inf]    [1mSteps[0m     
+2026-06-06T03:25:52.290971033Z [inf]    [38;5;238m──────────[0m
+2026-06-06T03:25:52.290971491Z [inf]    [95m▸ install[0m
+2026-06-06T03:25:52.290973498Z [inf]      [38;5;245m$[0m [1mpython -m venv /app/.venv[0m
+2026-06-06T03:25:52.290974247Z [inf]      [38;5;245m$[0m [1mpip install -r requirements.txt[0m
+2026-06-06T03:25:52.290974662Z [inf]              
+2026-06-06T03:25:52.290975147Z [inf]    [1mDeploy[0m    
+2026-06-06T03:25:52.290975610Z [inf]    [38;5;238m──────────[0m
+2026-06-06T03:25:52.290977817Z [inf]      [38;5;245m$[0m [1mpython manage.py migrate && gunicorn --bind 0.0.0.0:${PORT:-8000} bisuteria.wsgi:application[0m
+2026-06-06T03:25:52.290978433Z [inf]  
+2026-06-06T03:25:52.360537982Z [inf]  resolve image config for docker-image://ghcr.io/railwayapp/railpack-frontend:v0.26.1
+2026-06-06T03:26:44.768108922Z [inf]  resolve image config for docker-image://ghcr.io/railwayapp/railpack-frontend:v0.26.1
+2026-06-06T03:26:44.768896256Z [inf]  docker-image://ghcr.io/railwayapp/railpack-frontend:v0.26.1@sha256:3d1e151e01dde947b59e2bb124b812c86d386654c2285f8836bb304c2acdb5a4
+2026-06-06T03:26:44.768906303Z [inf]  docker-image://ghcr.io/railwayapp/railpack-frontend:v0.26.1@sha256:3d1e151e01dde947b59e2bb124b812c86d386654c2285f8836bb304c2acdb5a4
+2026-06-06T03:26:44.768906825Z [inf]  docker-image://ghcr.io/railwayapp/railpack-frontend:v0.26.1@sha256:3d1e151e01dde947b59e2bb124b812c86d386654c2285f8836bb304c2acdb5a4
+2026-06-06T03:26:49.967375742Z [inf]  load build definition from ./railpack-plan.json
+2026-06-06T03:26:49.967390982Z [inf]  load build definition from ./railpack-plan.json
+2026-06-06T03:26:49.968907363Z [inf]  load build definition from ./railpack-plan.json
+2026-06-06T03:26:50.118304928Z [inf]  load build definition from ./railpack-plan.json
+2026-06-06T03:26:50.245802170Z [inf]  install apt packages: libpq-dev
+2026-06-06T03:26:50.245804363Z [inf]  install apt packages: libpq5
+2026-06-06T03:26:50.245805196Z [inf]  docker-image://ghcr.io/railwayapp/railpack-runtime:mise-2026.6.0
+2026-06-06T03:26:50.245806292Z [inf]  docker-image://ghcr.io/railwayapp/railpack-builder:mise-2026.6.0
+2026-06-06T03:26:50.245806891Z [inf]  docker-image://ghcr.io/railwayapp/railpack-builder:mise-2026.6.0
+2026-06-06T03:26:50.245807755Z [inf]  docker-image://ghcr.io/railwayapp/railpack-runtime:mise-2026.6.0
+2026-06-06T03:26:50.245808437Z [inf]  docker-image://ghcr.io/railwayapp/railpack-runtime:mise-2026.6.0
+2026-06-06T03:26:50.245910695Z [inf]  pip install -r requirements.txt
+2026-06-06T03:26:50.245913075Z [inf]  copy requirements.txt
+2026-06-06T03:26:50.245914052Z [inf]  loading .
+2026-06-06T03:26:50.245915145Z [inf]  python -m venv /app/.venv
+2026-06-06T03:26:50.245915915Z [inf]  copy /root/.local/state/mise
+2026-06-06T03:26:50.245916433Z [inf]  mkdir /etc/mise
+2026-06-06T03:26:50.245917375Z [inf]  copy /usr/local/bin/mise
+2026-06-06T03:26:50.245917992Z [inf]  copy /mise/installs
+2026-06-06T03:26:50.245919019Z [inf]  copy /mise/shims
+2026-06-06T03:26:50.245919513Z [inf]  install mise packages: python
+2026-06-06T03:26:50.245920121Z [inf]  create mise config
+2026-06-06T03:26:50.245920469Z [inf]  copy / /app
+2026-06-06T03:26:50.245921032Z [inf]  copy /etc/mise/config.toml
+2026-06-06T03:26:50.245995466Z [inf]  [railpack] merge $packages:apt:runtime, $packages:mise, $build, $build
+2026-06-06T03:26:50.245996684Z [inf]  copy /app
+2026-06-06T03:26:50.245997496Z [inf]  copy /app/.venv
+2026-06-06T03:26:50.246502966Z [inf]  loading .
+2026-06-06T03:26:50.290134984Z [inf]  loading .
+2026-06-06T03:26:50.404887031Z [inf]  loading .
+2026-06-06T03:26:50.436908731Z [inf]  install apt packages: libpq5
+2026-06-06T03:26:50.436909451Z [inf]  install apt packages: libpq-dev
+2026-06-06T03:26:50.436910199Z [inf]  mkdir /etc/mise
+2026-06-06T03:26:50.436910725Z [inf]  create mise config
+2026-06-06T03:26:50.436911036Z [inf]  install mise packages: python
+2026-06-06T03:26:50.436911325Z [inf]  copy /mise/shims
+2026-06-06T03:26:50.436911633Z [inf]  copy /mise/installs
+2026-06-06T03:26:50.436911944Z [inf]  copy /usr/local/bin/mise
+2026-06-06T03:26:50.436912271Z [inf]  copy /etc/mise/config.toml
+2026-06-06T03:26:50.436912560Z [inf]  copy /root/.local/state/mise
+2026-06-06T03:26:50.436912952Z [inf]  python -m venv /app/.venv
+2026-06-06T03:26:50.436913422Z [inf]  copy requirements.txt
+2026-06-06T03:26:50.436913872Z [inf]  pip install -r requirements.txt
+2026-06-06T03:26:50.436914289Z [inf]  copy / /app
+2026-06-06T03:26:50.436914725Z [inf]  copy /app/.venv
+2026-06-06T03:26:50.436915380Z [inf]  copy /app
+2026-06-06T03:26:50.436917821Z [inf]  [railpack] merge $packages:apt:runtime, $packages:mise, $build, $build
+2026-06-06T03:26:50.465194151Z [inf]  [railpack] merge $packages:apt:runtime, $packages:mise, $build, $build
+2026-06-06T03:26:50.475679509Z [inf]  exporting to docker image format
+2026-06-06T03:26:51.290934825Z [inf]  exporting to docker image format
+2026-06-06T03:26:51.343092284Z [inf]  containerimage.descriptor: eyJtZWRpYVR5cGUiOiJhcHBsaWNhdGlvbi92bmQub2NpLmltYWdlLm1hbmlmZXN0LnYxK2pzb24iLCJkaWdlc3QiOiJzaGEyNTY6NmJmYTJlYTZhYzUzMDlhNjZmMWY0NDJmYWU4NTNlZGUwMWI3Y2M2MjM2ZmQ4YzVkZmY4ODIxZDYxZmQ4ZmFjMiIsInNpemUiOjIyMDEsImFubm90YXRpb25zIjp7Im9yZy5vcGVuY29udGFpbmVycy5pbWFnZS5jcmVhdGVkIjoiMjAyNi0wNi0wNlQwMzoyNjo1MFoifSwicGxhdGZvcm0iOnsiYXJjaGl0ZWN0dXJlIjoiYW1kNjQiLCJvcyI6ImxpbnV4In19
+2026-06-06T03:26:51.343095131Z [inf]  containerimage.config.digest: sha256:db51186693e048ca8a9c808eb97b02aabf2f222ec970d647262fcefd10f3439a
+2026-06-06T03:26:51.343097390Z [inf]  containerimage.digest: sha256:6bfa2ea6ac5309a66f1f442fae853ede01b7cc6236fd8c5dff8821d61fd8fac2
+2026-06-06T03:26:53.945704968Z [inf]  image push
