@@ -4,3 +4,4 @@ django-storages>=1.14
 cloudinary>=1.40
 python-dotenv>=1.0
 dj-database-url>=3.0
+psycopg2-binary>=2.9.12
