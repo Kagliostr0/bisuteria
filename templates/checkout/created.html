@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Pedido Confirmado - Bisutería Dorada{% endblock %}
+
+{% block content %}
+<section class="text-center py-16 sm:py-24">
+    <div class="max-w-lg mx-auto bg-gray-800 rounded-2xl shadow-lg border border-gray-700 p-8 sm:p-12">
+        <div class="text-6xl mb-6">💎</div>
+        <h1 class="text-3xl sm:text-4xl font-bold text-gold-400 mb-4">¡Pedido Realizado!</h1>
+        <div class="h-px bg-gradient-to-r from-transparent via-gold-500 to-transparent mb-6"></div>
+        <p class="text-base sm:text-lg text-gray-400 mb-4">
+            Gracias por tu compra. Tu número de pedido es:
+        </p>
+        <p class="text-3xl sm:text-4xl font-bold text-gold-400 mb-6">#{{ order.id }}</p>
+        <p class="text-gray-500 text-sm sm:text-base mb-8">Te enviaremos un correo con los detalles de tu pedido.</p>
+        <a href="{% url 'store:product_list' %}" class="inline-block bg-gold-600 text-black px-10 py-4 rounded-xl hover:bg-gold-500 hover:shadow-lg hover:shadow-gold-600/30 transition-all font-bold text-lg">
+            ✨ Seguir Comprando
+        </a>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} - Bisutería Dorada{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
+    <div class="bg-gray-800 rounded-xl p-2 shadow-sm border border-gray-700">
+        {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full rounded-lg" id="product-image">
+        {% else %}
+        <div class="w-full h-80 sm:h-96 bg-gray-700 rounded-lg flex items-center justify-center text-gray-500">Sin imagen</div>
+        {% endif %}
+    </div>
+    <div class="flex flex-col">
+        <div class="inline-block w-fit px-3 py-1 rounded-full bg-gold-900/30 text-gold-300 text-xs font-semibold mb-3 border border-gold-700">
+            {{ product.category.name }}
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-bold mb-2 text-white">{{ product.name }}</h1>
+        <p class="text-2xl sm:text-3xl font-bold text-gold-400 mb-6" id="product-price">${{ product.price }}</p>
+        <div class="h-px bg-gradient-to-r from-gold-500 to-transparent mb-6"></div>
+        <div class="text-gray-300 mb-6 leading-relaxed">{{ product.description|linebreaks }}</div>
+
+        {% if product.variants.exists %}
+        <div class="mb-4">
+            <p class="text-sm font-medium text-gold-400 mb-2">Variante:</p>
+            <div class="flex flex-wrap gap-2" id="variant-selector">
+                {% for variant in product.variants.all %}
+                <button type="button"
+                    data-variant-id="{{ variant.id }}"
+                    data-price="{{ variant.price_override|default:product.price }}"
+                    data-stock="{{ variant.stock }}"
+                    class="variant-btn px-4 py-2 rounded-lg border text-sm font-medium transition-all border-gray-600 text-gray-300 hover:border-gold-500 hover:text-gold-400 bg-gray-700/50">
+                    {{ variant.get_color_display }} / {{ variant.get_material_display }}
+                    {% if variant.size != "Única" %}({{ variant.size }}){% endif %}
+                </button>
+                {% endfor %}
+            </div>
+            <input type="hidden" name="variant_id" id="selected-variant" value="" form="cart-form">
+        </div>
+        {% endif %}
+
+        <form action="{% url 'shopping_cart:cart_add' product.id %}" method="post" id="cart-form" class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-auto bg-gray-800/50 p-4 rounded-xl border border-gray-700">
+            {% csrf_token %}
+            <div class="flex items-center gap-3">
+                <label for="quantity" class="font-medium text-gold-400">Cantidad:</label>
+                <select name="quantity" id="quantity" class="border border-gold-600 rounded-lg px-3 py-2 w-auto focus:border-gold-500 focus:ring-2 focus:ring-gold-500">
+                    {% for i in "123456789"|make_list %}
+                    <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <input type="hidden" name="override" value="false">
+            <button type="submit" class="w-full sm:w-auto bg-gold-600 text-black px-8 py-3 rounded-lg hover:bg-gold-500 hover:shadow-lg hover:shadow-gold-600/30 transition-all font-bold text-center">
+                Agregar al Carrito
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+const variantBtns = document.querySelectorAll('.variant-btn');
+const priceEl = document.getElementById('product-price');
+const variantInput = document.getElementById('selected-variant');
+const stockText = document.querySelector('.stock-info');
+
+variantBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+        variantBtns.forEach(b => {
+            b.classList.remove('bg-gold-600', 'text-black', 'border-gold-500');
+            b.classList.add('border-gray-600', 'text-gray-300', 'bg-gray-700/50');
+        });
+        this.classList.remove('border-gray-600', 'text-gray-300', 'bg-gray-700/50');
+        this.classList.add('bg-gold-600', 'text-black', 'border-gold-500');
+        variantInput.value = this.dataset.variantId;
+        priceEl.textContent = '$' + parseFloat(this.dataset.price).toFixed(2);
+    });
+});
+</script>
+{% endblock %}

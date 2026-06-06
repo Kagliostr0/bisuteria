@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Bisutería{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            50: '#fff9e6',
+                            100: '#fff0b3',
+                            200: '#ffe680',
+                            300: '#ffdb4d',
+                            400: '#ffd11a',
+                            500: '#e6b800',
+                            600: '#cca300',
+                            700: '#b38f00',
+                            800: '#997a00',
+                            900: '#806600',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        input, select, textarea {
+            background-color: #1f2937;
+            border: 1px solid #4b5563;
+            border-radius: 0;
+            padding: 0.5rem 1rem;
+            width: 100%;
+            color: #f3f4f6;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #e6b800;
+            box-shadow: 0 0 0 2px rgba(230, 184, 0, 0.3);
+        }
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: #e6b800;
+            color: #000;
+            font-size: 0.7rem;
+            font-weight: bold;
+            width: 20px;
+            height: 20px;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-950 text-gray-100 flex flex-col min-h-screen">
+    <header class="bg-gradient-to-r from-gold-500 via-gold-400 to-gold-500 shadow-lg border-b-2 border-gold-700">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+            <a href="{% url 'core:home' %}" class="sm:text-2xl font-bold text-black hover:text-gray-800 transition flex items-center gap-1">
+                <i class="ph ph-sparkle text-xl sm:text-2xl"></i>
+                <span class="hidden sm:inline">Bisutería Dorada</span>
+                <span class="sm:hidden">Bisutería</span>
+            </a>
+            <div class="hidden sm:flex items-center gap-6">
+                <a href="{% url 'store:product_list' %}" class="text-base text-black hover:text-gray-700 transition font-semibold">Productos</a>
+                <a href="{% url 'core:about' %}" class="text-base text-black hover:text-gray-700 transition font-semibold">Nosotros</a>
+                <a href="{% url 'shopping_cart:cart_detail' %}" class="relative text-base text-black hover:text-gray-700 transition font-semibold flex items-center gap-1">
+                    <i class="ph ph-shopping-cart text-xl"></i> Carrito
+                    {% if cart_item_count > 0 %}
+                    <span class="cart-count">{{ cart_item_count }}</span>
+                    {% endif %}
+                </a>
+                {% if user.is_authenticated %}
+                {% if user.is_staff %}
+                <a href="{% url 'admin:index' %}" class="text-xs text-gray-700 hover:text-black transition font-medium mr-2"><i class="ph ph-gear-six align-middle"></i></a>
+                {% endif %}
+                <form method="post" action="{% url 'logout' %}" class="inline">
+                    {% csrf_token %}
+                    <button type="submit" class="text-xs text-gray-700 hover:text-black transition font-medium">Salir</button>
+                </form>
+                {% else %}
+                <a href="{% url 'login' %}" class="text-xs text-gray-700 hover:text-black transition font-medium">Ingresar</a>
+                {% endif %}
+            </div>
+            <div class="flex sm:hidden items-center gap-3">
+                <a href="{% url 'shopping_cart:cart_detail' %}" class="relative text-black">
+                    <i class="ph ph-shopping-cart text-2xl"></i>
+                    {% if cart_item_count > 0 %}
+                    <span class="cart-count">{{ cart_item_count }}</span>
+                    {% endif %}
+                </a>
+                <button id="menu-toggle" class="text-black p-1" aria-label="Menú">
+                    <i class="ph ph-list text-2xl"></i>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden sm:hidden bg-gray-900/95 backdrop-blur-md border-t border-gold-700/50 shadow-xl origin-top">
+            <div class="max-w-7xl mx-auto px-4 py-2 space-y-1">
+                <a href="{% url 'store:product_list' %}" class="block text-gray-200 hover:text-gold-400 font-medium py-3 px-3 rounded-lg hover:bg-gray-800 transition">
+                    <i class="ph ph-tag inline-block align-middle mr-2"></i> Productos
+                </a>
+                <a href="{% url 'core:about' %}" class="block text-gray-200 hover:text-gold-400 font-medium py-3 px-3 rounded-lg hover:bg-gray-800 transition">
+                    <i class="ph ph-info inline-block align-middle mr-2"></i> Nosotros
+                </a>
+                {% if user.is_authenticated %}
+                {% if user.is_staff %}
+                <a href="{% url 'admin:index' %}" class="block text-gray-200 hover:text-gold-400 font-medium py-3 px-3 rounded-lg hover:bg-gray-800 transition">
+                    <i class="ph ph-gear-six inline-block align-middle mr-2"></i> Admin
+                </a>
+                {% endif %}
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="w-full text-left text-gray-200 hover:text-gold-400 font-medium py-3 px-3 rounded-lg hover:bg-gray-800 transition">
+                        <i class="ph ph-sign-out inline-block align-middle mr-2"></i> Salir
+                    </button>
+                </form>
+                {% else %}
+                <a href="{% url 'login' %}" class="block text-gray-200 hover:text-gold-400 font-medium py-3 px-3 rounded-lg hover:bg-gray-800 transition">
+                    <i class="ph ph-sign-in inline-block align-middle mr-2"></i> Ingresar
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+    <script>
+        document.getElementById('menu-toggle')?.addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = this.querySelector('i');
+            menu.classList.toggle('hidden');
+            icon.classList.toggle('ph-list');
+            icon.classList.toggle('ph-x');
+        });
+    </script>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 py-8 w-full">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600 border-t-2 border-gold-700 mt-8 sm:mt-12 py-2 sm:py-6 text-center text-xs sm:text-sm text-black">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="font-semibold text-sm sm:text-lg mb-1"><i class="ph ph-sparkle align-middle mr-1"></i> Bisutería Dorada</p>
+            <p class="opacity-75">Elegancia y estilo en cada pieza</p>
+            <p class="opacity-60 mt-3">&copy; {% now "Y" %} Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>

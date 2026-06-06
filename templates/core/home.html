@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - Bisutería Dorada{% endblock %}
+
+{% block content %}
+<section class="text-center py-6 sm:py-16 relative overflow-hidden rounded-2xl mb-6 sm:mb-8 bg-gradient-to-br from-gold-500 via-gold-400 to-gold-600 shadow-lg shadow-gold-500/30">
+    <div class="relative z-10">
+        <h1 class="text-2xl sm:text-5xl font-bold text-black mb-2 sm:mb-3 drop-shadow-md">Bisutería Dorada</h1>
+        <p class="text-xs sm:text-base text-gray-900 mb-4 sm:mb-6 max-w-2xl mx-auto font-medium">Elegancia y estilo en cada pieza</p>
+        <a href="{% url 'store:product_list' %}" class="inline-block bg-black text-gold-400 px-6 sm:px-8 py-2 sm:py-3 rounded-lg hover:bg-gray-800 transition font-bold shadow-lg text-sm sm:text-base">
+            <i class="ph ph-sparkle align-middle mr-1"></i> Ver Colección Completa
+        </a>
+    </div>
+</section>
+
+<section>
+    <div class="flex items-center gap-3 mb-8">
+        <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent"></div>
+        <h2 class="text-xl sm:text-2xl font-bold text-gold-400 text-center">Productos Destacados</h2>
+        <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent"></div>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        {% for product in products %}
+        <div class="bg-gray-800 rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-700 hover:border-gold-500 overflow-hidden group">
+            <a href="{{ product.get_absolute_url }}">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full aspect-square sm:aspect-auto sm:h-44 object-cover group-hover:scale-105 transition-transform duration-500">
+                {% else %}
+                <div class="w-full aspect-square sm:aspect-auto sm:h-44 bg-gray-700 flex items-center justify-center text-gray-500">Sin imagen</div>
+                {% endif %}
+                <div class="p-3 border-t border-gray-700">
+                    <h3 class="font-semibold text-sm sm:text-base text-white truncate">{{ product.name }}</h3>
+                    <p class="text-gold-400 font-bold text-base">${{ product.price }}</p>
+                </div>
+            </a>
+        </div>
+        {% empty %}
+        <p class="col-span-full text-gray-400">No hay productos disponibles aún.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

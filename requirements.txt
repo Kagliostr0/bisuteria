@@ -1,0 +1,4 @@
+Django>=6.0
+Pillow>=10.0
+django-storages>=1.14
+cloudinary>=1.40

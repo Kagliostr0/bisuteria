@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout - Bisutería Dorada{% endblock %}
+
+{% block content %}
+<div class="flex items-center gap-3 mb-6 sm:mb-8">
+    <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent"></div>
+    <h1 class="text-2xl sm:text-3xl font-bold text-gold-400 text-center">Finalizar Pedido</h1>
+    <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent"></div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
+    <div>
+        <div class="bg-gray-800 rounded-xl shadow-sm border border-gray-700 p-4 sm:p-6">
+            <h2 class="text-lg sm:text-xl font-bold text-gold-400 mb-4 flex items-center gap-2">
+                📦 Resumen del Pedido
+            </h2>
+            <div class="divide-y divide-gray-700">
+                {% for item in cart %}
+                <div class="flex justify-between py-3 text-sm sm:text-base text-gray-300">
+                    <span>{{ item.product.name }} <span class="text-gray-500">x{{ item.quantity }}</span></span>
+                    <span class="font-medium">${{ item.total_price }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="flex justify-between py-3 mt-2 border-t-2 border-gold-500 font-bold text-lg">
+                <span class="text-white">Total</span>
+                <span class="text-gold-400 text-xl">${{ cart.get_total_price }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="bg-gray-800 rounded-xl shadow-sm border border-gray-700 p-4 sm:p-6">
+            <h2 class="text-lg sm:text-xl font-bold text-gold-400 mb-4 flex items-center gap-2">
+                ✏️ Datos de Envío
+            </h2>
+            <form method="post" class="space-y-4">
+                {% csrf_token %}
+                {% for field in form %}
+                <div>
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-300 mb-1">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <p class="text-red-400 text-sm mt-1">{{ field.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <button type="submit" class="w-full bg-gold-600 text-black py-4 rounded-xl hover:bg-gold-500 hover:shadow-lg hover:shadow-gold-600/30 transition-all font-bold text-lg mt-4">
+                    💎 Realizar Pedido
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

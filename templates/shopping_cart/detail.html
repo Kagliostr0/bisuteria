@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Carrito - Bisutería Dorada{% endblock %}
+
+{% block content %}
+<div class="flex items-center gap-3 mb-6 sm:mb-8">
+    <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent"></div>
+    <h1 class="text-2xl sm:text-3xl font-bold text-gold-400 text-center">Carrito de Compras</h1>
+    <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent"></div>
+</div>
+
+{% if cart %}
+<div class="bg-gray-800 rounded-xl shadow-sm border border-gray-700 overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead class="bg-gradient-to-r from-gold-600 to-gold-700 text-black">
+                <tr>
+                    <th class="text-left p-3 sm:p-4 text-sm sm:text-base">Producto</th>
+                    <th class="text-center p-3 sm:p-4 text-sm sm:text-base">Cant</th>
+                    <th class="text-right p-3 sm:p-4 text-sm sm:text-base">Precio</th>
+                    <th class="text-right p-3 sm:p-4 text-sm sm:text-base">Total</th>
+                    <th class="p-3 sm:p-4"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart %}
+                <tr class="border-t border-gray-700 hover:bg-gray-700/50 transition">
+                    <td class="p-3 sm:p-4 text-sm sm:text-base font-medium text-gray-200">
+                        {{ item.product.name }}
+                        {% if item.variant %}
+                        <br><span class="text-xs text-gold-400">{{ item.variant.get_color_display }} / {{ item.variant.get_material_display }}</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-center p-3 sm:p-4 text-sm sm:text-base text-gray-200">{{ item.quantity }}</td>
+                    <td class="text-right p-3 sm:p-4 text-sm sm:text-base text-gray-200">${{ item.price }}</td>
+                    <td class="text-right p-3 sm:p-4 text-sm sm:text-base text-gray-200">${{ item.total_price }}</td>
+                    <td class="text-right p-3 sm:p-4">
+                        {% if item.variant %}
+                        <a href="{% url 'shopping_cart:cart_remove_variant' item.product.id item.variant.id %}" class="text-red-400 hover:text-red-300 text-sm font-medium">✕ Eliminar</a>
+                        {% else %}
+                        <a href="{% url 'shopping_cart:cart_remove' item.product.id %}" class="text-red-400 hover:text-red-300 text-sm font-medium">✕ Eliminar</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot class="bg-gray-700">
+                <tr>
+                    <td colspan="3" class="text-right p-3 sm:p-4 font-semibold text-base sm:text-lg text-gray-200">Total:</td>
+                    <td class="text-right p-3 sm:p-4 font-bold text-xl sm:text-2xl text-gold-400">${{ cart.get_total_price }}</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<div class="mt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+    <a href="{% url 'store:product_list' %}" class="text-gold-400 hover:underline font-medium">← Seguir Comprando</a>
+    <a href="{% url 'checkout:order_create' %}" class="inline-block w-full sm:w-auto text-center bg-gold-600 text-black px-10 py-4 rounded-xl hover:bg-gold-500 hover:shadow-lg hover:shadow-gold-600/30 transition-all font-bold text-lg">
+        ✨ Proceder al Pago
+    </a>
+</div>
+{% else %}
+<div class="text-center py-16">
+    <p class="text-6xl mb-6">🛒</p>
+    <p class="text-gray-400 text-xl mb-6">Tu carrito está vacío</p>
+    <a href="{% url 'store:product_list' %}" class="inline-block bg-gold-600 text-black px-8 py-3 rounded-xl hover:bg-gold-500 hover:shadow-lg hover:shadow-gold-600/30 transition-all font-bold text-lg">
+        ✨ Ver Productos
+    </a>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Iniciar Sesión - Bisutería Dorada{% endblock %}
+
+{% block content %}
+<div class="max-w-sm mx-auto mt-12">
+    <div class="flex items-center gap-3 mb-6">
+        <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent"></div>
+        <h1 class="text-xl font-bold text-gold-400 text-center">Iniciar Sesión</h1>
+        <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent"></div>
+    </div>
+    <form method="post" class="bg-gray-800 rounded-xl p-6 border border-gray-700 space-y-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="w-full bg-gold-600 text-black py-3 rounded-xl hover:bg-gold-500 transition font-bold">
+            Ingresar
+        </button>
+    </form>
+</div>
+{% endblock %}
