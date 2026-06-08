@@ -1,36 +1,68 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Inicio - Bisutería Dorada{% endblock %}
 
 {% block content %}
-<section class="text-center py-6 sm:py-16 relative overflow-hidden rounded-2xl mb-6 sm:mb-8 bg-gradient-to-br from-gold-500 via-gold-400 to-gold-600 shadow-lg shadow-gold-500/30">
-    <div class="relative z-10">
-        <h1 class="text-2xl sm:text-5xl font-bold text-black mb-2 sm:mb-3 drop-shadow-md">Bisutería Dorada</h1>
-        <p class="text-xs sm:text-base text-gray-900 mb-4 sm:mb-6 max-w-2xl mx-auto font-medium">Elegancia y estilo en cada pieza</p>
-        <a href="{% url 'store:product_list' %}" class="inline-block bg-black text-gold-400 px-6 sm:px-8 py-2 sm:py-3 rounded-lg hover:bg-gray-800 transition font-bold shadow-lg text-sm sm:text-base">
-            <i class="ph ph-sparkle align-middle mr-1"></i> Ver Colección Completa
-        </a>
+<div class="swiper hero-swiper rounded-2xl mb-10 sm:mb-12 overflow-hidden">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide relative overflow-hidden">
+            <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{% static 'images/modelo-1.jpg' %}');"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
+            <div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-4 py-10 sm:py-16">
+                <h1 class="font-heading text-2xl sm:text-5xl font-bold text-gold-400 mb-2 sm:mb-3 gold-text-brillo">Bisutería Dorada</h1>
+                <p class="text-sm sm:text-lg text-gray-300 mb-4 sm:mb-6 max-w-2xl mx-auto font-medium">Elegancia y estilo en cada pieza</p>
+                <a href="{% url 'store:product_list' %}" class="inline-block bg-gold-600 text-black px-8 sm:px-10 py-3 sm:py-4 rounded-lg hover:bg-gold-500 transition font-bold shadow-lg text-sm sm:text-base tracking-wider uppercase">
+                    <i class="ph ph-sparkle align-middle mr-1"></i> Ver Colección
+                </a>
+            </div>
+        </div>
+        <div class="swiper-slide relative overflow-hidden">
+            <div class="absolute inset-0 bg-cover bg-[50%_65%]" style="background-image: url('{% static 'images/modelo-2.jpg' %}');"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
+            <div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-4 py-10 sm:py-16">
+                <h2 class="font-heading text-xl sm:text-4xl font-bold text-gold-400 mb-2 gold-text-brillo">Colección Premium</h2>
+                <p class="text-sm sm:text-lg text-gray-300 mb-4 sm:mb-6 max-w-2xl mx-auto font-medium">Descubre nuestros diseños exclusivos</p>
+                <a href="{% url 'store:product_list' %}" class="inline-block bg-gold-600 text-black px-8 sm:px-10 py-3 sm:py-4 rounded-lg hover:bg-gold-500 transition font-bold shadow-lg text-sm sm:text-base tracking-wider uppercase">
+                    <i class="ph ph-diamond align-middle mr-1"></i> Explorar
+                </a>
+            </div>
+        </div>
+        <div class="swiper-slide relative overflow-hidden">
+            <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{% static 'images/modelo-3.jpg' %}');"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
+            <div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-4 py-10 sm:py-16">
+                <h2 class="font-heading text-xl sm:text-4xl font-bold text-gold-400 mb-2 gold-text-brillo">Estilo Urbano</h2>
+                <p class="text-sm sm:text-lg text-gray-300 mb-4 sm:mb-6 max-w-2xl mx-auto font-medium">Joyas para todos los estilos</p>
+                <a href="{% url 'store:product_list' %}" class="inline-block bg-gold-600 text-black px-8 sm:px-10 py-3 sm:py-4 rounded-lg hover:bg-gold-500 transition font-bold shadow-lg text-sm sm:text-base tracking-wider uppercase">
+                    <i class="ph ph-gem align-middle mr-1"></i> Descubrir
+                </a>
+            </div>
+        </div>
     </div>
-</section>
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
 
 <section>
     <div class="flex items-center gap-3 mb-8">
-        <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent"></div>
-        <h2 class="text-xl sm:text-2xl font-bold text-gold-400 text-center">Productos Destacados</h2>
-        <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent"></div>
+        <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gold-500/50 to-transparent"></div>
+        <h2 class="font-heading text-xl sm:text-2xl font-bold text-gold-400 text-center gold-text-brillo tracking-wide">Productos Destacados</h2>
+        <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gold-500/50 to-transparent"></div>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-6">
         {% for product in products %}
-        <div class="bg-gray-800 rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gold-800 hover:border-gold-500 overflow-hidden group">
+        <div class="product-card bg-gray-800/80 rounded-[6px] shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gold-800/50 hover:border-gold-500 overflow-hidden group">
             <a href="{{ product.get_absolute_url }}">
                 {% if product.image %}
                 <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full aspect-square sm:aspect-auto sm:h-44 object-cover group-hover:scale-105 transition-transform duration-500">
                 {% else %}
                 <div class="w-full aspect-square sm:aspect-auto sm:h-44 bg-gray-700 flex items-center justify-center text-gray-500">Sin imagen</div>
                 {% endif %}
-                <div class="p-3 border-t border-gold-800">
-                    <h3 class="font-semibold text-sm sm:text-base text-gold-100 truncate">{{ product.name }}</h3>
-                    <p class="text-gold-400 font-bold text-base">${{ product.price }}</p>
+                <div class="p-3 border-t border-gold-800/50">
+                    <h3 class="font-heading font-semibold text-sm sm:text-base text-gold-100 truncate">{{ product.name }}</h3>
+                    <p class="text-gold-400 font-bold text-base gold-text-brillo">${{ product.price }}</p>
                 </div>
             </a>
         </div>
@@ -39,4 +71,15 @@
         {% endfor %}
     </div>
 </section>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+new Swiper('.hero-swiper', {
+    loop: true,
+    autoplay: { delay: 8000, disableOnInteraction: false },
+    speed: 800,
+    pagination: { el: '.swiper-pagination', clickable: true },
+    navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+});
+</script>
 {% endblock %}

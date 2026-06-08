@@ -78,6 +78,47 @@ Antes de cualquier cambio importante se hace un backup en `C:\Users\lomt1\AppDat
 - **Firewall**: regla para puerto 8000 agregada (si hay permisos de admin)
 - **Nav admin**: icono engranaje ⚙ visible cuando admin logueado, link a `/admin/`
 
+### Cambios 2026-06-07 (~21:25)
+- Backup: `bisuteria-backup-20260607-212728`
+- Reemplazada imagen `set-dia-a-dia-collar-y-pulsera.jpg` en `downloads/` y `media/products/`
+- Ejecutado `seed_products` para copiar la imagen nueva a `media/products/`
+- Commit + push a GitHub (Railway actualizado automáticamente)
+
+### Cambios 2026-06-08 (~00:40)
+- Backup: `bisuteria-backup-20260608-003927`
+- Agregadas clases CSS `.gold-brillo` (shimmer + glow en fondos) y `.gold-text-brillo` (glow en texto)
+- Aplicado `.gold-brillo` a header, hero, footer (metallic shimmer animado + glow)
+- Aplicado `.gold-text-brillo` a títulos, precios y logo (text-shadow glow)
+- Solo local, sin push
+
+### Cambios inspirados en Swarovski (2026-06-08 ~01:01)
+- Backup: `bisuteria-backup-20260608-010111`
+- Agregada Google Font: Playfair Display (títulos) + Inter (cuerpo)
+- Clase `.font-heading` con Playfair Display para títulos elegantes
+- **Header**: cambiado de fondo dorado masivo a `bg-gray-950/80` con borde sutil dorado, texto gold-400, blur
+- **Footer**: cambiado de fondo dorado a fondo oscuro con borde sutil, texto gold-400 con glow
+- **Hero**: mantenido con `gold-brillo` (shimmer + sweep), más espaciado, título más grande
+- **Categorías**: sidebar más sutil (`border-gold-800/30`, `text-gray-400`)
+- **Tarjetas producto**: bordes más sutiles (`border-gold-800/50`), títulos con Playfair Display
+- Aplicado `.font-heading` a todos los títulos principales (h1, h2, h3 clave)
+- Solo local, sin push
+
+### Carrusel + reflejo (2026-06-08 ~01:18)
+- Backup: `bisuteria-backup-20260608-010111` (mismo backup anterior, no se tocó)
+- Agregado **Swiper.js** vía CDN para carrusel hero
+- Descargadas 2 fotos de Pexels (modelos con joyas) a `static/images/`
+- Hero reemplazado por carrusel con 2 slides: fondo de modelo + overlay oscuro + texto dorado + gold-brillo
+- Autoplay lento (5s), navegación con flechas y bullets dorados
+- Agregado **reflejo dorado** debajo de cada card de producto (`.product-card::after` con gradiente radial)
+- Clase `product-card` aplicada en home y listado de productos
+- Solo local, sin push
+
+### Cambios 2026-06-08 (~01:50)
+- Reemplazado modelo-2.jpg: ahora es un primer plano de mujer con collar de cadena dorada bien visible (Pexels 32220056)
+- Reemplazado modelo-3.jpg: mujer con joyería floral y tatuaje visible en el brazo (Pexels 29579373)
+- Cambiado overlay del carrusel de `bg-black/30` a gradiente `from-black/60 via-black/10 to-transparent` para que las joyas y tatuajes se vean sin oscurecer la parte superior
+- Reemplazado modelo-3.jpg: mujer con tatuaje visible y aros grandes (Pexels 16135565, "Portrait of Beautiful Woman Wearing Earrings and Tattoo")
+
 ### Próximos pasos posibles
 - Autenticación de usuarios (registro/login)
 - Pasarela de pago (Mercado Pago, Stripe)

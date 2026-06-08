@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Bisutería{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
     <script>
@@ -57,20 +61,95 @@
             align-items: center;
             justify-content: center;
         }
+        .gold-brillo {
+            position: relative;
+            background: linear-gradient(135deg, #cca300 0%, #e6b800 15%, #ffd11a 30%, #ffe680 40%, #fff5b3 45%, #ffe680 50%, #ffd11a 55%, #e6b800 65%, #cca300 80%, #e6b800 100%);
+            background-size: 400% 400%;
+            animation: gold-shimmer 6s ease-in-out infinite;
+            box-shadow: 0 0 30px rgba(230, 184, 0, 0.6), 0 0 60px rgba(230, 184, 0, 0.2);
+        }
+        .gold-brillo::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(105deg, transparent 25%, rgba(230,184,0,0.25) 45%, rgba(230,184,0,0.4) 50%, rgba(230,184,0,0.25) 55%, transparent 75%);
+            background-size: 200% 100%;
+            animation: gold-sweep 5s ease-in-out infinite;
+            pointer-events: none;
+        }
+        .gold-text-brillo {
+            text-shadow: 0 0 10px rgba(230, 184, 0, 0.6), 0 0 25px rgba(230, 184, 0, 0.3), 0 0 40px rgba(230, 184, 0, 0.15);
+        }
+        .font-heading {
+            font-family: 'Playfair Display', Georgia, serif;
+        }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        .hero-swiper {
+            height: 420px;
+        }
+        .hero-swiper .swiper-slide {
+            background-size: cover;
+            background-position: center;
+        }
+        .hero-swiper .gold-brillo::after {
+            animation-duration: 10s;
+        }
+        .hero-swiper .gold-brillo {
+            animation-duration: 12s;
+        }
+        @media (max-width: 640px) {
+            .hero-swiper { height: 320px; }
+        }
+        .swiper-pagination-bullet {
+            background: rgba(230, 184, 0, 0.5);
+            opacity: 1;
+        }
+        .swiper-pagination-bullet-active {
+            background: #e6b800;
+            box-shadow: 0 0 10px rgba(230, 184, 0, 0.6);
+        }
+        .swiper-button-next, .swiper-button-prev {
+            color: #e6b800;
+            text-shadow: 0 0 10px rgba(230, 184, 0, 0.5);
+        }
+        .product-card::after {
+            content: '';
+            position: absolute;
+            bottom: -24px;
+            left: 10%;
+            width: 80%;
+            height: 24px;
+            background: radial-gradient(ellipse at center, rgba(230, 184, 0, 0.25) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        @keyframes gold-shimmer {
+            0% { background-position: 0% 0%; }
+            25% { background-position: 100% 0%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+        @keyframes gold-sweep {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
     </style>
 </head>
 <body class="bg-gray-950 text-gray-100 flex flex-col min-h-screen">
-    <header class="bg-gradient-to-r from-gold-500 via-gold-400 to-gold-500 shadow-lg border-b-2 border-gold-700">
+    <header class="bg-gray-950/80 backdrop-blur-md border-b border-gold-700/30 shadow-lg shadow-gold-900/10">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-            <a href="{% url 'core:home' %}" class="sm:text-2xl font-bold text-black hover:text-gray-800 transition flex items-center gap-1">
-                <i class="ph ph-sparkle text-xl sm:text-2xl"></i>
-                <span class="hidden sm:inline">Bisutería Dorada</span>
-                <span class="sm:hidden">Bisutería</span>
+            <a href="{% url 'core:home' %}" class="sm:text-2xl font-bold text-gold-400 hover:text-gold-300 transition flex items-center gap-1 font-heading">
+                <i class="ph ph-sparkle text-xl sm:text-2xl text-gold-400"></i>
+                <span class="hidden sm:inline gold-text-brillo">Bisutería Dorada</span>
+                <span class="sm:hidden gold-text-brillo">Bisutería</span>
             </a>
             <div class="hidden sm:flex items-center gap-6">
-                <a href="{% url 'store:product_list' %}" class="text-base text-black hover:text-gray-700 transition font-semibold">Productos</a>
-                <a href="{% url 'core:about' %}" class="text-base text-black hover:text-gray-700 transition font-semibold">Nosotros</a>
-                <a href="{% url 'shopping_cart:cart_detail' %}" class="relative text-base text-black hover:text-gray-700 transition font-semibold flex items-center gap-1">
+                <a href="{% url 'store:product_list' %}" class="text-base text-gold-400 hover:text-gold-300 transition font-medium">Productos</a>
+                <a href="{% url 'core:about' %}" class="text-base text-gold-400 hover:text-gold-300 transition font-medium">Nosotros</a>
+                <a href="{% url 'shopping_cart:cart_detail' %}" class="relative text-base text-gold-400 hover:text-gold-300 transition font-medium flex items-center gap-1">
                     <i class="ph ph-shopping-cart text-xl"></i> Carrito
                     {% if cart_item_count > 0 %}
                     <span class="cart-count">{{ cart_item_count }}</span>
@@ -78,24 +157,24 @@
                 </a>
                 {% if user.is_authenticated %}
                 {% if user.is_staff %}
-                <a href="{% url 'admin:index' %}" class="text-xs text-gray-700 hover:text-black transition font-medium mr-2"><i class="ph ph-gear-six align-middle"></i></a>
+                <a href="{% url 'admin:index' %}" class="text-xs text-gold-600 hover:text-gold-400 transition font-medium mr-2"><i class="ph ph-gear-six align-middle"></i></a>
                 {% endif %}
                 <form method="post" action="{% url 'logout' %}" class="inline">
                     {% csrf_token %}
-                    <button type="submit" class="text-xs text-gray-700 hover:text-black transition font-medium">Salir</button>
+                    <button type="submit" class="text-xs text-gold-600 hover:text-gold-400 transition font-medium">Salir</button>
                 </form>
                 {% else %}
-                <a href="{% url 'login' %}" class="text-xs text-gray-700 hover:text-black transition font-medium">Ingresar</a>
+                <a href="{% url 'login' %}" class="text-xs text-gold-600 hover:text-gold-400 transition font-medium">Ingresar</a>
                 {% endif %}
             </div>
             <div class="flex sm:hidden items-center gap-3">
-                <a href="{% url 'shopping_cart:cart_detail' %}" class="relative text-black">
+                <a href="{% url 'shopping_cart:cart_detail' %}" class="relative text-gold-400">
                     <i class="ph ph-shopping-cart text-2xl"></i>
                     {% if cart_item_count > 0 %}
                     <span class="cart-count">{{ cart_item_count }}</span>
                     {% endif %}
                 </a>
-                <button id="menu-toggle" class="text-black p-1" aria-label="Menú">
+                <button id="menu-toggle" class="text-gold-400 p-1" aria-label="Menú">
                     <i class="ph ph-list text-2xl"></i>
                 </button>
             </div>
@@ -142,11 +221,11 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600 border-t-2 border-gold-700 mt-8 sm:mt-12 py-2 sm:py-6 text-center text-xs sm:text-sm text-black">
+    <footer class="bg-gray-950 border-t border-gold-700/20 mt-8 sm:mt-12 py-6 sm:py-8 text-center text-xs sm:text-sm">
         <div class="max-w-7xl mx-auto px-4">
-            <p class="font-semibold text-sm sm:text-lg mb-1"><i class="ph ph-sparkle align-middle mr-1"></i> Bisutería Dorada</p>
-            <p class="opacity-75">Elegancia y estilo en cada pieza</p>
-            <p class="opacity-60 mt-3">&copy; {% now "Y" %} Todos los derechos reservados.</p>
+            <p class="font-heading font-bold text-base sm:text-xl text-gold-400 gold-text-brillo mb-1"><i class="ph ph-sparkle align-middle mr-1"></i> Bisutería Dorada</p>
+            <p class="text-gray-500">Elegancia y estilo en cada pieza</p>
+            <p class="text-gray-600 mt-4">&copy; {% now "Y" %} Todos los derechos reservados.</p>
         </div>
     </footer>
 </body>
