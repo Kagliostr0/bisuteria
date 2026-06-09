@@ -119,6 +119,22 @@ Antes de cualquier cambio importante se hace un backup en `C:\Users\lomt1\AppDat
 - Cambiado overlay del carrusel de `bg-black/30` a gradiente `from-black/60 via-black/10 to-transparent` para que las joyas y tatuajes se vean sin oscurecer la parte superior
 - Reemplazado modelo-3.jpg: mujer con tatuaje visible y aros grandes (Pexels 16135565, "Portrait of Beautiful Woman Wearing Earrings and Tattoo")
 
+### Cambios 2026-06-08 (~02:40-02:50)
+- Backup: `bisuteria-backup-20260608-0247`
+- Arregladas posiciones de fondo para slides 2 y 3
+- Reemplazados modelo-2.jpg y modelo-3.jpg varias veces hasta ajustar
+- modelo-2.jpg final: primer plano mujer con collar cadena dorada (Pexels 32220056)
+- modelo-3.jpg final: primer plano con set de joyería dorada (collar, aros, anillo) (Pexels 10944923)
+- Overlay cambiado a gradiente `from-black/60 via-black/10 to-transparent`
+- Altura carrusel reducida (`py-10 sm:py-16`) para menos zoom
+- Commit + push a GitHub (autorizado por usuario)
+
+### Cambios 2026-06-08 (~04:08)
+- Backup: `bisuteria-backup-20260608-0408`
+- Agregado `.slide-reflejo` (reflejo dorado animado con sweep) sobre los 3 slides del carrusel
+- Solo CSS + HTML, sin tocar funcionalidad ni BD
+- Commit + push a GitHub (autorizado por usuario)
+
 ### Próximos pasos posibles
 - Autenticación de usuarios (registro/login)
 - Pasarela de pago (Mercado Pago, Stripe)
