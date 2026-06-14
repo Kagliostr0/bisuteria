@@ -139,3 +139,75 @@ Antes de cualquier cambio importante se hace un backup en `C:\Users\lomt1\AppDat
 - Autenticación de usuarios (registro/login)
 - Pasarela de pago (Mercado Pago, Stripe)
 - Subir a producción (hosting)
+
+---
+
+## Investigación: Cloudinary para imágenes en producción (2026-06-13)
+
+### Problema
+`django.conf.urls.static.static()` tiene un check interno de `DEBUG`:
+```python
+# django/conf/urls/static.py línea 23
+elif not settings.DEBUG or urlsplit(prefix).netloc:
+    return []  # Devuelve lista vacía cuando DEBUG=False
+```
+Esto significa que **no hay forma de servir media files con `DEBUG=False`** usando `static()`.
+
+### Solución: Cloudinary
+Servidor CDN que sirve las imágenes. Django no las sirve directamente.
+
+### Pasos para activar
+
+1. **Crear cuenta gratis** en https://cloudinary.com
+2. **Copiar credenciales** desde Settings → API Keys
+3. **Instalar paquete**:
+   ```bash
+   pip install django-cloudinary-storage
+   ```
+4. **Cambios en settings.py**:
+   ```python
+   # INSTALLED_APPS - agregar ANTES de staticfiles:
+   'cloudinary_storage',
+   'django.contrib.staticfiles',
+   'cloudinary',
+
+   # Configuración de Cloudinary:
+   CLOUDINARY_STORAGE = {
+       'CLOUD_NAME': 'tu_cloud_name',
+       'API_KEY': 'tu_api_key',
+       'API_SECRET': 'tu_api_secret'
+   }
+
+   # Cambiar almacenamiento:
+   DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+   ```
+5. **Variable de entorno en Railway**:
+   ```
+   CLOUDINARY_URL=cloudinary://API_KEY:API_SECRET@CLOUD_NAME
+   ```
+6. **Migrar imágenes**: Re-subir desde el admin de Django
+
+### Notas importantes
+- `django-storages` y `cloudinary` ya están en requirements.txt
+- Las URLs de imágenes cambian a `res.cloudinary.com/...`
+- Templates no cambian: `{{ product.image.url }}` sigue funcionando
+- Plan gratuito: 25GB storage, 25GB bandwidth/mes
+- Las imágenes existentes en `media/products/` se deben re-subir
+
+### Variables de entorno en Railway (agregadas manualmente por el usuario 2026-06-13)
+El usuario agregó estas variables en el panel de Railway:
+- `DEBUG=False`
+- `DJANGO_SECRET_KEY=d)ngtw$te6@gxsqg4&1grhk#^5$4(w_8y97!ps1jn2wssvl$4l`
+
+**Nota**: Estas variables NO funcionan actualmente porque `settings.py` tiene valores hardcodeados. Para que funcionen, hay que cambiar `settings.py` para que lea de `os.getenv()`. Pero hacer eso sin Cloudinary rompe las imágenes (porque `static()` de Django devuelve `[]` cuando `DEBUG=False`).
+
+### Seguridad implementada (2026-06-14 ~00:50)
+- Backup: `bisuteria-backup-20260614-0045`
+- **Vulnerabilidades corregidas**:
+  1. `DEBUG`, `SECRET_KEY`, `ALLOWED_HOSTS` ahora leen de variables de entorno (`os.getenv()`) con fallbacks locales
+  2. `SameSite=Strict` en cookies de sesión y CSRF
+  3. `Secure` en cookies solo cuando `DEBUG=False` (producción/HTTPS)
+  4. Path Traversal bloqueado en `/media/` (regex detecta `..`, `%2e%2e`, `%252e`)
+- **Archivos modificados**: `bisuteria/settings.py`, `bisuteria/urls.py`
+- **Impacto**: 0 cambios en estética/funcionalidad. Local funciona igual (lee `.env`). Railway usa sus variables existentes
+- **Railway requiere**: agregar variable `ALLOWED_HOSTS=bisuteria-production.up.railway.app`

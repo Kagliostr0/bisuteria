@@ -26,12 +26,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-lkcu-ch$um0anhkd^*r3umxf8&40uzw949o)fz*mle$5y_@1-!'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-lkcu-ch$um0anhkd^*r3umxf8&40uzw949o)fz*mle$5y_@1-!')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8000",
@@ -173,3 +173,9 @@ DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 # Para usarlo desde el template: {{ product.image.url }} ya devuelve
 # la URL optimizada. Opcional: agrega transformaciones:
 #   {{ product.image.url }}?w=600&h=600&c_fill&q_auto
+
+# ─── Seguridad de cookies ───────────────────────────────────
+SESSION_COOKIE_SAMESITE = 'Strict'
+CSRF_COOKIE_SAMESITE = 'Strict'
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG

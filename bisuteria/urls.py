@@ -1,7 +1,10 @@
+import re
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path
+from django.http import HttpResponseForbidden
+from django.urls import include, path, re_path
+from django.views.static import serve
 
 admin.site.site_header = "✨ Bisutería Dorada — Admin"
 admin.site.site_title = "Bisutería Dorada"
@@ -16,5 +19,11 @@ urlpatterns = [
     path("", include("core.urls")),
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+def serve_media(request, path):
+    if re.search(r'(\.\.|%2e%2e|%252e)', path, re.IGNORECASE):
+        return HttpResponseForbidden("Acceso denegado")
+    return serve(request, path, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += [
+    re_path(r'^media/(?P<path>.*)$', serve_media),
+]
