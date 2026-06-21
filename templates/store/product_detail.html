@@ -4,11 +4,27 @@
 
 {% block content %}
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
-    <div class="bg-gray-800 rounded-xl p-2 shadow-sm border border-gray-700">
-        {% if product.image %}
-        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full rounded-lg" id="product-image">
-        {% else %}
-        <div class="w-full h-80 sm:h-96 bg-gray-700 rounded-lg flex items-center justify-center text-gray-500">Sin imagen</div>
+    <div class="flex flex-col gap-3">
+        <div class="bg-gray-800 rounded-xl p-2 shadow-sm border border-gray-700">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full rounded-lg" id="product-image">
+            {% else %}
+            <div class="w-full h-80 sm:h-96 bg-gray-700 rounded-lg flex items-center justify-center text-gray-500">Sin imagen</div>
+            {% endif %}
+        </div>
+        {% if product.images.all %}
+        <div class="flex gap-2 overflow-x-auto pb-1">
+            {% if product.image %}
+            <button type="button" onclick="changeImage('{{ product.image.url }}')" class="gallery-thumb flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 border-gold-500 opacity-100">
+                <img src="{{ product.image.url }}" alt="Principal" class="w-full h-full object-cover">
+            </button>
+            {% endif %}
+            {% for img in product.images.all %}
+            <button type="button" onclick="changeImage('{{ img.image.url }}')" class="gallery-thumb flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 border-gray-600 hover:border-gold-400 opacity-70 hover:opacity-100 transition-all">
+                <img src="{{ img.image.url }}" alt="{{ img.alt_text|default:product.name }}" class="w-full h-full object-cover">
+            </button>
+            {% endfor %}
+        </div>
         {% endif %}
     </div>
     <div class="flex flex-col">
@@ -29,11 +45,9 @@
                     data-variant-id="{{ variant.id }}"
                     data-price="{{ variant.price_override|default:product.price }}"
                     data-stock="{{ variant.stock }}"
-                    {% if variant.stock == 0 %}disabled{% endif %}
-                    class="variant-btn px-4 py-2 rounded-lg border text-sm font-medium transition-all {% if variant.stock == 0 %}border-gray-700 text-gray-600 bg-gray-800/50 cursor-not-allowed opacity-50{% else %}border-gray-600 text-gray-300 hover:border-gold-500 hover:text-gold-400 bg-gray-700/50{% endif %}">
+                    class="variant-btn px-4 py-2 rounded-lg border text-sm font-medium transition-all border-gray-600 text-gray-300 hover:border-gold-500 hover:text-gold-400 bg-gray-700/50">
                     {{ variant.get_color_display }} / {{ variant.get_material_display }}
                     {% if variant.size != "Única" %}({{ variant.size }}){% endif %}
-                    {% if variant.stock == 0 %} - Sin stock{% endif %}
                 </button>
                 {% endfor %}
             </div>
@@ -66,6 +80,16 @@
 </div>
 
 <script>
+function changeImage(src) {
+    document.getElementById('product-image').src = src;
+    document.querySelectorAll('.gallery-thumb').forEach(t => {
+        t.classList.remove('border-gold-500', 'opacity-100');
+        t.classList.add('border-gray-600', 'opacity-70');
+    });
+    event.currentTarget.classList.remove('border-gray-600', 'opacity-70');
+    event.currentTarget.classList.add('border-gold-500', 'opacity-100');
+}
+
 const variantBtns = document.querySelectorAll('.variant-btn');
 const priceEl = document.getElementById('product-price');
 const variantInput = document.getElementById('selected-variant');
@@ -75,7 +99,6 @@ const noStockWarning = document.getElementById('no-stock-warning');
 
 variantBtns.forEach(btn => {
     btn.addEventListener('click', function() {
-        if (this.disabled) return;
         variantBtns.forEach(b => {
             b.classList.remove('bg-gold-600', 'text-black', 'border-gold-500');
             b.classList.add('border-gray-600', 'text-gray-300', 'bg-gray-700/50');

@@ -211,3 +211,53 @@ El usuario agregó estas variables en el panel de Railway:
 - **Archivos modificados**: `bisuteria/settings.py`, `bisuteria/urls.py`
 - **Impacto**: 0 cambios en estética/funcionalidad. Local funciona igual (lee `.env`). Railway usa sus variables existentes
 - **Railway requiere**: agregar variable `ALLOWED_HOSTS=bisuteria-production.up.railway.app`
+
+### Cambios 2026-06-15 (~23:30-00:30)
+- Backups: `bisuteria-backup-20260615`, `bisuteria-backup-20260615-v2`, `bisuteria-backup-20260615-actual`
+- **Reflejo dorado bajo tarjetas eliminado** (comentado en CSS):
+  - Antes: `.product-card::after` creaba un glow radial dorado debajo de cada tarjeta
+  - Ahora: comentado en `templates/base.html:130` con referencia al backup
+  - Para restaurar: descomentar el bloque `.product-card::after` en `base.html`
+- **Validación de variantes en producto** (`templates/store/product_detail.html`):
+  - Botón "Agregar al Carrito" deshabilitado hasta seleccionar variante (si tiene variantes)
+  - Mensaje "⚠ Elegí una variante antes de agregar al carrito" visible hasta seleccionar
+  - Variantes sin stock: se muestran normales pero al clickear aparece "❌ Esta variante no tiene stock disponible"
+  - Si variante sin stock → botón queda deshabilitado
+- **Variantes sin stock en BD**: Variante 234 (Plateado/Plata del "Set Collar y Aros Clásico") puesta en stock=0 para probar
+  - Para restaurar: `python manage.py shell -c "from store.models import Variant; v = Variant.objects.get(id=234); v.stock = 2; v.save()"`
+- Push a ambos repos: `ginobadhouse/bisuteria` y `Kagliostr0/bisuteria`
+
+### Cambios admin 2026-06-15 (~00:35)
+- Backup: `bisuteria-backup-20260615-admin`
+- **Admin personalizado** (`bisuteria/admin.py`):
+  - Header: "Bisutería Dorada — Panel"
+  - Título: "Bisutería Dorada"
+  - Índice: "Administración"
+- **Grupo Editor** (`store/management/commands/create_editor_group.py`):
+  - Permisos: ver/editar Productos, Categorías, Variantes, Pedidos
+  - Puede agregar/eliminar Variantes
+  - NO puede borrar Productos/Categorías/Pedidos
+  - NO puede ver usuarios ni configuración
+  - Para asignar: Admin → Usuarios → seleccionar usuario → grupos → agregar "Editor"
+- **Thumbnails mejorados** (`store/admin.py`):
+  - Productos: thumbnail de 80px con sombra
+  - Variantes: thumbnail de 50px (usa imagen propia o la del producto)
+- **Pedidos con fotos** (`checkout/admin.py`):
+  - OrderItemInline muestra thumbnail del producto/variante
+- Solo local, sin push
+
+### Cambios multi-imágenes 2026-06-15 (~00:40)
+- Backup: `bisuteria-backup-20260615-images`
+- **Nuevo modelo `ProductImage`** (`store/models.py`):
+  - ForeignKey a Product (related_name="images")
+  - Campos: image (upload_to="products/gallery/"), order, alt_text
+  - Relación: un producto puede tener hasta 5 imágenes adicionales
+- **Migración**: `store.0003_productimage`
+- **Admin inline** (`store/admin.py`):
+  - `ProductImageInline` (TabularInline, max_num=5)
+  - Aparece al editar un producto, debajo de Variantes
+- **Template detalle producto** (`templates/store/product_detail.html`):
+  - Galería de thumbnails debajo de la imagen principal
+  - Click en thumbnail cambia la imagen principal
+  - Thumbnails con borde dorado al seleccionar
+- Solo local, sin push

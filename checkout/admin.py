@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import format_html
 
 from .models import Order, OrderItem
 
@@ -6,7 +7,15 @@ from .models import Order, OrderItem
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
     extra = 0
-    readonly_fields = ["product", "price", "quantity"]
+    readonly_fields = ["order_thumbnail", "product", "variant", "price", "quantity"]
+
+    def order_thumbnail(self, obj):
+        if obj.variant and obj.variant.image:
+            return format_html('<img src="{}" width="50" height="50" style="object-fit:cover;border-radius:6px;" />', obj.variant.image.url)
+        if obj.product and obj.product.image:
+            return format_html('<img src="{}" width="50" height="50" style="object-fit:cover;border-radius:6px;" />', obj.product.image.url)
+        return "—"
+    order_thumbnail.short_description = "Foto"
 
 
 @admin.register(Order)

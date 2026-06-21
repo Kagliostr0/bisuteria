@@ -113,3 +113,28 @@ class Variant(models.Model):
 
     def __str__(self):
         return f"{self.product.name} - {self.get_color_display()} / {self.get_material_display()}"
+
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name="images",
+        verbose_name="Producto",
+    )
+    image = models.ImageField(
+        upload_to="products/gallery/",
+        verbose_name="Imagen adicional",
+    )
+    order = models.PositiveIntegerField(
+        default=0, verbose_name="Orden",
+    )
+    alt_text = models.CharField(
+        max_length=200, blank=True, verbose_name="Texto alternativo",
+    )
+
+    class Meta:
+        verbose_name = "Imagen del producto"
+        verbose_name_plural = "Imágenes del producto"
+        ordering = ["order"]
+
+    def __str__(self):
+        return f"{self.product.name} - Imagen {self.order}"
