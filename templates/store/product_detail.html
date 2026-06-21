@@ -22,20 +22,28 @@
 
         {% if product.variants.exists %}
         <div class="mb-4">
-            <p class="text-sm font-medium text-gold-400 mb-2">Variante:</p>
+            <p class="text-sm font-medium text-gold-400 mb-2">Seleccioná una variante:</p>
             <div class="flex flex-wrap gap-2" id="variant-selector">
                 {% for variant in product.variants.all %}
                 <button type="button"
                     data-variant-id="{{ variant.id }}"
                     data-price="{{ variant.price_override|default:product.price }}"
                     data-stock="{{ variant.stock }}"
-                    class="variant-btn px-4 py-2 rounded-lg border text-sm font-medium transition-all border-gray-600 text-gray-300 hover:border-gold-500 hover:text-gold-400 bg-gray-700/50">
+                    {% if variant.stock == 0 %}disabled{% endif %}
+                    class="variant-btn px-4 py-2 rounded-lg border text-sm font-medium transition-all {% if variant.stock == 0 %}border-gray-700 text-gray-600 bg-gray-800/50 cursor-not-allowed opacity-50{% else %}border-gray-600 text-gray-300 hover:border-gold-500 hover:text-gold-400 bg-gray-700/50{% endif %}">
                     {{ variant.get_color_display }} / {{ variant.get_material_display }}
                     {% if variant.size != "Única" %}({{ variant.size }}){% endif %}
+                    {% if variant.stock == 0 %} - Sin stock{% endif %}
                 </button>
                 {% endfor %}
             </div>
             <input type="hidden" name="variant_id" id="selected-variant" value="" form="cart-form">
+            <p class="text-amber-400 text-sm mt-2 flex items-center gap-1" id="variant-warning">
+                ⚠ Elegí una variante antes de agregar al carrito
+            </p>
+            <p class="text-red-400 text-sm mt-1 hidden" id="no-stock-warning">
+                ❌ Esta variante no tiene stock disponible
+            </p>
         </div>
         {% endif %}
 
@@ -50,7 +58,7 @@
                 </select>
             </div>
             <input type="hidden" name="override" value="false">
-            <button type="submit" class="w-full sm:w-auto bg-gold-600 text-black px-8 py-3 rounded-lg hover:bg-gold-500 hover:shadow-lg hover:shadow-gold-600/30 transition-all font-bold text-center">
+            <button type="submit" id="add-to-cart-btn" class="w-full sm:w-auto bg-gold-600 text-black px-8 py-3 rounded-lg hover:bg-gold-500 hover:shadow-lg hover:shadow-gold-600/30 transition-all font-bold text-center disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-gold-600 disabled:hover:shadow-none"{% if product.variants.exists %} disabled{% endif %}>
                 Agregar al Carrito
             </button>
         </form>
@@ -61,10 +69,13 @@
 const variantBtns = document.querySelectorAll('.variant-btn');
 const priceEl = document.getElementById('product-price');
 const variantInput = document.getElementById('selected-variant');
-const stockText = document.querySelector('.stock-info');
+const addToCartBtn = document.getElementById('add-to-cart-btn');
+const variantWarning = document.getElementById('variant-warning');
+const noStockWarning = document.getElementById('no-stock-warning');
 
 variantBtns.forEach(btn => {
     btn.addEventListener('click', function() {
+        if (this.disabled) return;
         variantBtns.forEach(b => {
             b.classList.remove('bg-gold-600', 'text-black', 'border-gold-500');
             b.classList.add('border-gray-600', 'text-gray-300', 'bg-gray-700/50');
@@ -73,6 +84,16 @@ variantBtns.forEach(btn => {
         this.classList.add('bg-gold-600', 'text-black', 'border-gold-500');
         variantInput.value = this.dataset.variantId;
         priceEl.textContent = '$' + parseFloat(this.dataset.price).toFixed(2);
+        const stock = parseInt(this.dataset.stock);
+        if (addToCartBtn) {
+            addToCartBtn.disabled = stock === 0;
+        }
+        if (variantWarning) {
+            variantWarning.classList.toggle('hidden', stock > 0);
+        }
+        if (noStockWarning) {
+            noStockWarning.classList.toggle('hidden', stock > 0);
+        }
     });
 });
 </script>
