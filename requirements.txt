@@ -7,3 +7,4 @@ dj-database-url>=3.0
 psycopg2-binary>=2.9.12
 gunicorn>=23.0
 whitenoise>=6.12
+django-axes>=6.0
