@@ -1,5 +1,3 @@
-import os
-import posixpath
 import re
 from django.conf import settings
 from django.conf.urls.static import static
@@ -14,9 +12,7 @@ admin.site.index_title = "Panel de Administración"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("accounts/login/", include([
-        path("", include("django.contrib.auth.urls")),
-    ])),
+    path("accounts/", include("django.contrib.auth.urls")),
     path("cart/", include("shopping_cart.urls")),
     path("checkout/", include("checkout.urls")),
     path("store/", include("store.urls")),
@@ -24,13 +20,9 @@ urlpatterns = [
 ]
 
 def serve_media(request, path):
-    normalized = posixpath.normpath(path)
-    if '..' in normalized or normalized.startswith('/'):
+    if re.search(r'(\.\.|%2e%2e|%252e)', path, re.IGNORECASE):
         return HttpResponseForbidden("Acceso denegado")
-    full_path = os.path.normpath(os.path.join(settings.MEDIA_ROOT, normalized))
-    if not full_path.startswith(str(settings.MEDIA_ROOT)):
-        return HttpResponseForbidden("Acceso denegado")
-    return serve(request, normalized, document_root=settings.MEDIA_ROOT)
+    return serve(request, path, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += [
     re_path(r'^media/(?P<path>.*)$', serve_media),
