@@ -261,3 +261,84 @@ El usuario agregó estas variables en el panel de Railway:
   - Click en thumbnail cambia la imagen principal
   - Thumbnails con borde dorado al seleccionar
 - Solo local, sin push
+
+---
+
+## Diario de Seguridad — 2026-06-15
+
+### Contexto
+El usuario pidió un pentest passivo de la página en producción (Railailway). Se descubrió que OSAI (Mr. B) ya había hecho un pentest activo y había encontrado vulnerabilidades críticas.
+
+### Hallazgos del pentest (OSAI + nuestro)
+
+| # | Vulnerabilidad | Gravedad | Estado |
+|---|----------------|----------|--------|
+| 1 | `DEBUG=True` en producción — expone páginas de error con variables de entorno, código fuente, rutas internas | CRÍTICO | Pendiente (variable en Railway) |
+| 2 | `DATABASE_URL` con contraseña visible en error pages (`loQxOMxDTPBnpvVZFfKVcbNLEjqNCIiJ`) | CRÍTICO | Pendiente (rotar contraseña en Railway) |
+| 3 | `ALLOWED_HOSTS=*` — host header injection posible | CRÍTICO | Pendiente (variable en Railway) |
+| 4 | Path traversal funcional (`/media/..%2F..%2Fetc%2Fpasswd`) | ALTO | Pendiente (código local) |
+| 5 | Sin rate limiting en login — brute-force trivial | ALTO | Pendiente (código local) |
+| 6 | Password reset habilitado — permite enumeration de emails | MEDIO | Pendiente (código local) |
+| 7 | `SECRET_KEY` hardcodeada como fallback | ALTO | Ya existía |
+| 8 | Contraseña admin `admin123` en start.sh | MEDIO | Ya existía |
+| 9 | `db.sqlite3` viejo presente | BAJO | Ya existía |
+
+### Lo que se hizo (código local)
+1. **Backup**: `bisuteria-backup-20260615-seguridad`
+2. **Cambios aplicados localmente**:
+   - `requirements.txt`: +`django-axes>=6.0`
+   - `settings.py`: DEBUG→False, ALLOWED_HOSTS→localhost, +axes config
+   - `urls.py`: path traversal hardening (normpath + verificación), eliminado password_reset
+   - `start.sh`: password por variable de entorno
+   - `templates/registration/lockout.html`: página de bloqueo por brute-force
+3. **Se pusheó a GitHub** → Railway hizo deploy → **página dejó de funcionar** (Error 400 Bad Request)
+4. **Causa del error**: `ALLOWED_HOSTS` en el código ahora es `localhost,127.0.0.1` por defecto. Railway no tiene la variable `ALLOWED_HOSTS` seteada, así que Django rechaza todas las requests.
+5. **Se revirtió todo** al estado anterior → página volvió a funcionar
+
+### Lo que falta hacer (en Railway)
+El usuario no sabe crear variables de entorno en Railway. Se necesita:
+
+**Paso 1 — Variables de entorno en Railway (pestaña Variables del dashboard):**
+```
+DEBUG = False
+ALLOWED_HOSTS = bisuteria-production.up.railway.app
+```
+
+**Paso 2 — Rotar contraseña de PostgreSQL:**
+- Ir a la sección Database del dashboard de Railway
+- Buscar opción para regenerar credenciales
+- Copiar la nueva DATABASE_URL
+- Reemplazar la variable DATABASE_URL
+
+**Paso 3 — Una vez que las variables estén, volver a pushear los cambios de seguridad**
+
+### Backups disponibles
+- `bisuteria-backup-20260615-seguridad` — estado actual (pre-seguridad)
+- `bisuteria-backup-20260615-admin` — antes de admin mejorado
+- `bisuteria-backup-20260615-images` — antes de multi-imágenes
+
+### Nota para el futuro
+Cuando el usuario tenga acceso a las variables de Railway, hay que:
+1. Crear las variables primero
+2. Verificar que la página funcione con las variables
+3. Recién ahí pushear los cambios de seguridad al código
+
+### Cambios 2026-06-22 (~20:30-21:30)
+- Backup: `bisuteria-backup-20260622`
+- **Carrusel full-width**: movido fuera del contenedor `max-w-7xl` (nuevo bloque `fullwidth` en base.html), ocupa todo el ancho
+- **Bordes cuadrados**: eliminado `rounded-2xl` del carrusel
+- **Altura restaurada**: 420px desktop / 320px mobile (original)
+- **Flechas ocultas**: divs `swiper-button-next/prev` con clase `hidden`, navegación Swiper configurada igual (sigue funcionando swipe)
+- **Página Nosotros**: reemplazado badge "Conoce nuestra historia" por icono del favicon SVG
+- Push a `ginobadhouse/bisuteria` (Railway)
+
+### Cambios 2026-06-23 (~20:45)
+- Eliminado ícono hamburguesa (`ph-list`) del encabezado "Categorías" en `product_list.html`
+- Push a `ginobadhouse/bisuteria`
+
+### PENDIENTE PARA MAÑANA (2026-06-16)
+- **Acordar al usuario** configurar variables en Railway:
+  - `DEBUG = False`
+  - `ALLOWED_HOSTS = bisuteria-production.up.railway.app`
+- **Rotar contraseña de PostgreSQL** (la actual `loQxOMxDTPBnpvVZFfKVcbNLEjqNCIiJ` está comprometida)
+- **Volver a pushear** los cambios de seguridad después de configurar Railway

@@ -8,8 +8,8 @@
 <div class="flex flex-col sm:flex-row gap-6 sm:gap-8">
     <aside class="w-full sm:w-48 lg:w-64 flex-shrink-0">
         <div class="bg-gray-800/80 rounded-xl shadow-sm border border-gold-800/30 p-4 sm:p-6">
-            <h3 class="font-heading font-bold text-lg mb-4 text-gold-400 gold-text-brillo flex items-center gap-2">
-                <i class="ph ph-list"></i> Categorías
+            <h3 class="font-heading font-bold text-lg mb-4 text-gold-400 gold-text-brillo">
+                Categorías
             </h3>
             <div class="flex sm:flex-col gap-2 overflow-x-auto sm:overflow-x-visible pb-2 sm:pb-0">
                 <a href="{% url 'store:product_list' %}" class="whitespace-nowrap sm:whitespace-normal text-sm sm:text-base px-3 py-2 rounded-lg transition {% if not category %}bg-gold-600 text-black font-semibold{% else %}text-gray-400 hover:text-gold-400 hover:bg-gold-900/30{% endif %}">
