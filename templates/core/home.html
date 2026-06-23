@@ -3,8 +3,8 @@
 
 {% block title %}Inicio - Bisutería Dorada{% endblock %}
 
-{% block content %}
-<div class="swiper hero-swiper rounded-2xl mb-10 sm:mb-12 overflow-hidden">
+{% block fullwidth %}
+<div class="swiper hero-swiper w-full overflow-hidden">
     <div class="swiper-wrapper">
         <div class="swiper-slide relative overflow-hidden">
             <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{% static 'images/modelo-1.jpg' %}');"></div>
@@ -44,10 +44,12 @@
         </div>
     </div>
     <div class="swiper-pagination"></div>
-    <div class="swiper-button-next"></div>
-    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next hidden"></div>
+    <div class="swiper-button-prev hidden"></div>
 </div>
+{% endblock %}
 
+{% block content %}
 <section>
     <div class="flex items-center gap-3 mb-8">
         <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gold-500/50 to-transparent"></div>
